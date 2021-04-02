@@ -1,3 +1,4 @@
+using MetricsAgent.DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,8 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Data.SQLite;
 
-namespace AgentsController
+namespace MetricsAgent
 {
     public class Startup
     {
@@ -26,6 +28,34 @@ namespace AgentsController
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            ConfigureSqlLiteConnection(services);
+            services.AddScoped<ICpuMetricsRepository, CpuMetricsRepository>();
+        }
+
+        private void ConfigureSqlLiteConnection(IServiceCollection services)
+        {
+            string connectionString = "Data Source=:memory:";
+            var connection = new SQLiteConnection(connectionString);
+            connection.Open();
+            PrepareSchema(connection);
+            services.AddSingleton(connection);
+        }
+
+        private void PrepareSchema(SQLiteConnection connection)
+        {
+            using (var command = new SQLiteCommand(connection))
+            {
+                // задаем новый текст команды для выполнения
+                // удаляем таблицу с метриками если она существует в базе данных
+                command.CommandText = "DROP TABLE IF EXISTS cpumetrics";
+                // отправляем запрос в базу данных
+                command.ExecuteNonQuery();
+
+
+                command.CommandText = @"CREATE TABLE cpumetrics(id INTEGER PRIMARY KEY,
+                    value INT, time INT)";
+                command.ExecuteNonQuery();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
