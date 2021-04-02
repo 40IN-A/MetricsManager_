@@ -12,9 +12,21 @@ namespace MetricsManager.Controllers
     [Route("api/[controller]")]
     public class CpuMetricsController : ControllerBase
     {
+        private readonly ILogger<CpuMetricsController> _logger;
+        public CpuMetricsController(ILogger<CpuMetricsController> logger)
+        {
+            _logger = logger;
+            _logger.LogDebug(1, "NLog встроен в CpuMetricsController");
+        }
+
+        public CpuMetricsController()
+        {
+        }
+
         [HttpGet("from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAgent([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
+            _logger.LogInformation("Привет! Это наше первое сообщение в лог");
             return Ok();
         }
 

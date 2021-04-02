@@ -1,18 +1,18 @@
-using AgentsController.Controllers;
+using MetricsAgent.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using Xunit;
-using AgentsController;
+using MetricsAgent;
 
 namespace AgentsTests
 {
     public class AgentsControllerUnitTest
     {
-        private AgentControllers controller;
+        private AgentController controller;
 
         public AgentsControllerUnitTest()
         {
-            controller = new AgentControllers();
+            controller = new AgentController();
         }
 
         [Fact]
