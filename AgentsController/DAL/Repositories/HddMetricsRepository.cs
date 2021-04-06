@@ -104,7 +104,7 @@ namespace MetricsAgent.DAL.Repositories
                     return new HddMetric
                     {
                         Id = reader.GetInt32(0),
-                        Left = reader.GetInt32(0),
+                        Left = reader.GetInt32(1),
                     };
                 }
                 else

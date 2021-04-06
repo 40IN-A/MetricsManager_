@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MetricsAgent.DAL;
 using MetricsAgent.DAL.Models;
-using MetricsAgent.DAL.Interfaces;
 using System.Data.SQLite;
 
 
 namespace MetricsAgent.DAL.Repositories
 {
-    // маркировочный интерфейс
-    // необходим, чтобы проверить работу репозитория на тесте-заглушке
-    public interface IDotNetRepository : IRepository<DotNetMetric>
+    public interface IDotNetMetricsRepository : IRepository<DotNetMetric>
     {
 
     }
@@ -94,7 +90,7 @@ namespace MetricsAgent.DAL.Repositories
                         Count = reader.GetInt32(1),
                         // налету преобразуем прочитанные секунды в метку времени
                         FromTime = TimeSpan.FromSeconds(reader.GetInt32(2)),
-                        ToTime = TimeSpan.FromSeconds(reader.GetInt32(2))
+                        ToTime = TimeSpan.FromSeconds(reader.GetInt32(3))
                     });
                 }
             }
@@ -116,9 +112,9 @@ namespace MetricsAgent.DAL.Repositories
                     return new DotNetMetric
                     {
                         Id = reader.GetInt32(0),
-                        Count = reader.GetInt32(0),
-                        FromTime = TimeSpan.FromSeconds(reader.GetInt32(0)),
-                        ToTime = TimeSpan.FromSeconds(reader.GetInt32(0))
+                        Count = reader.GetInt32(1),
+                        FromTime = TimeSpan.FromSeconds(reader.GetInt32(2)),
+                        ToTime = TimeSpan.FromSeconds(reader.GetInt32(3))
                     };
                 }
                 else

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,17 @@ namespace MetricsManager.Controllers
     [ApiController]
     public class RamMetricsController : ControllerBase
     {
-        [HttpGet("available/{available}")]
-        public IActionResult GetMetricsFromAgent([FromRoute] float available)
+        private readonly ILogger<RamMetricsController> _logger;
+        public RamMetricsController(ILogger<RamMetricsController> logger)
         {
+            _logger = logger;
+            _logger.LogDebug(1, "NLog встроен в CpuMetricsController");
+        }
+
+        [HttpGet("available/{available}")]
+        public IActionResult GetMetricsFromAgent([FromRoute] int AgentId, [FromRoute] float available)
+        {
+            _logger.LogInformation($"GetMetrics: AgentId - {AgentId}, available - {available}");
             return Ok();
         }
     }
