@@ -1,4 +1,6 @@
 using MetricsAgent.DAL;
+using MetricsAgent.DAL.Repositories;
+//using MetricsAgent.DAL.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,6 +32,10 @@ namespace MetricsAgent
             services.AddControllers();
             ConfigureSqlLiteConnection(services);
             services.AddScoped<ICpuMetricsRepository, CpuMetricsRepository>();
+            //services.AddScoped<IDotNetRepository, DotNetMetricsRepository>();
+            services.AddScoped<IHddMetricsRepository, HddMetricsRepository>();
+            //services.AddScoped<INetworkRepository, NetworkMetricsRepository>();
+            services.AddScoped<IRamMetricsRepository, RamMetricsRepository>();
         }
 
         private void ConfigureSqlLiteConnection(IServiceCollection services)

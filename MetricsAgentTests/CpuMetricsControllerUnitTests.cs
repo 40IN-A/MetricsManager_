@@ -33,5 +33,7 @@ namespace MetricsAgentTests
             // действительно вызвался метод Create репозитория с нужным типом объекта в параметре
             mock.Verify(repository => repository.Create(It.IsAny<CpuMetric>()), Times.AtMostOnce());
         }
+
+       
     }
 }

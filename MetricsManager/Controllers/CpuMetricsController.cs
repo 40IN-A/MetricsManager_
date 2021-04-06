@@ -19,32 +19,36 @@ namespace MetricsManager.Controllers
             _logger.LogDebug(1, "NLog встроен в CpuMetricsController");
         }
 
-        public CpuMetricsController()
-        {
-        }
+        //public CpuMetricsController()
+        //{
+        //}
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAgent([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        public IActionResult GetMetricsFromAgent([FromRoute] int AgentId, [FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
             _logger.LogInformation("Привет! Это наше первое сообщение в лог");
+            _logger.LogInformation($"GetMetrics: AgentID - {AgentId}, fromTime - {fromTime}, toTime - {toTime}");
             return Ok();
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}/percentiles/{percentile}")]
-        public IActionResult GetMetricsByPercentileFromAgent([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime, [FromRoute] Percentile percentile)
+        public IActionResult GetMetricsByPercentileFromAgent([FromRoute] int AgentId, [FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime, [FromRoute] Percentile percentile)
         {
+            _logger.LogInformation($"GetMetricsByPercentile: AgentID - {AgentId}, fromTime - {fromTime}, toTime - {toTime}, Percentile - {percentile}");
             return Ok();
         }
 
         [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAllCluster([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
+            _logger.LogInformation($"GetMetricsFromAllCluster: fromTime - {fromTime}, toTime - {toTime}");
             return Ok();
         }
 
         [HttpGet("cluster/from/{fromTime}/to/{toTime}/percentiles/{percentile}")]
         public IActionResult GetMetricsByPercentileFromAllCluster([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime, [FromRoute] Percentile percentile)
         {
+            _logger.LogInformation($"GetMetricsByPercentileFromAllCluster: fromTime - {fromTime}, toTime - {toTime}, Percentile - {percentile}");
             return Ok();
         }
     }

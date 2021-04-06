@@ -4,6 +4,7 @@ using MetricsAgent.Requests;
 using MetricsAgent.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
 namespace MetricsAgent.Controllers
 {
@@ -12,11 +13,26 @@ namespace MetricsAgent.Controllers
     public class CpuMetricsController : ControllerBase
     {
         private ICpuMetricsRepository repository;
+        private readonly ILogger<CpuMetricsController> _logger;
 
-        public CpuMetricsController(ICpuMetricsRepository repository)
+        public CpuMetricsController(ICpuMetricsRepository repository, ILogger<CpuMetricsController> logger)
         {
             this.repository = repository;
+            _logger = logger;
+            _logger.LogDebug(1, "NLog встроен в CpuMetricsController");
         }
+
+        //public CpuMetricsController(ICpuMetricsRepository repository)
+        //{
+        //    this.repository = repository;
+        //}
+
+        //private readonly ILogger<CpuMetricsController> _logger;
+        //public CpuMetricsController(ILogger<CpuMetricsController> logger)
+        //{
+        //    _logger = logger;
+        //    _logger.LogDebug(1, "NLog встроен в CpuMetricsController");
+        //}
 
         [HttpPost("create")]
         public IActionResult Create([FromBody] CpuMetricCreateRequest request)
@@ -26,6 +42,8 @@ namespace MetricsAgent.Controllers
                 Time = request.Time,
                 Value = request.Value
             });
+
+            _logger.LogInformation($"Create: Time - {request.Time}, Value - {request.Value}");
 
             return Ok();
         }
@@ -43,7 +61,8 @@ namespace MetricsAgent.Controllers
             foreach (var metric in metrics)
             {
                 response.Metrics.Add(new CpuMetricDto { Time = metric.Time.Minutes, Value = metric.Value, Id = metric.Id });
-            }
+                _logger.LogInformation($"GetAll: Time - {metric.Time.Minutes}, Value - {metric.Value}");
+            }            
 
             return Ok(response);
         }
